@@ -6,7 +6,7 @@
     <title>محاسبه سهم واحدها</title>
     <style>
         * {
-            box-sizing: border-box; /* جلوگیری از مشکل عرض */
+            box-sizing: border-box;
         }
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
@@ -14,7 +14,7 @@
             padding: 5%;
             background-color: #f5f5f5;
             margin: 0;
-            font-size: 16px; /* پایه برای موبایل */
+            font-size: 16px;
         }
         h2 {
             color: #333;
@@ -171,10 +171,13 @@
                 display: none;
             }
             #bankInfo {
-                margin: 0;
+                margin: 0 0 2mm 0;
                 font-size: 8pt;
                 display: flex;
-                justify-content: space-between;
+                justify-content: center; /* وسط‌چین کردن */
+                align-items: center;
+                text-align: center;
+                width: 100%;
             }
             #bankInfo label {
                 width: auto;
@@ -186,6 +189,7 @@
                 margin: 0 5px;
                 border: none;
                 direction: ltr;
+                text-align: center; /* متن داخل ورودی هم وسط‌چین */
             }
             h2 {
                 font-size: 11pt;
@@ -222,7 +226,7 @@
             <input type="text" id="cardNumber" placeholder="شماره کارت">
             <label>صاحب حساب:</label>
             <input type="text" id="accountHolder" placeholder="نام صاحب حساب">
-            <label>شماره تماس:</label>
+            <label>شماره تماس مدیر:</label>
             <input type="text" id="managerContact" placeholder="شماره تماس">
         </div>
         <h2>محاسبه سهم هر واحد در ساختمان ابویی با نفرات 25</h2>
