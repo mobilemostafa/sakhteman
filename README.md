@@ -2,6 +2,7 @@
 <html lang="fa">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- برای ریسپانسیو بودن -->
     <title>محاسبه سهم واحدها</title>
     <style>
         body {
@@ -9,16 +10,18 @@
             direction: rtl;
             padding: 20px;
             background-color: #f5f5f5;
+            margin: 0;
         }
         h2 {
             color: #333;
             text-align: center;
+            font-size: 1.5em; /* انعطاف‌پذیر */
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
             background: white;
-            padding: 20px;
+            padding: 5%;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
@@ -39,9 +42,10 @@
             border-radius: 5px;
             outline: none;
             margin: 5px;
+            box-sizing: border-box;
         }
         #cardNumber {
-            direction: ltr; /* چپ به راست برای شماره کارت */
+            direction: ltr;
             text-align: left;
         }
         .input-group input:focus {
@@ -85,7 +89,7 @@
             color: white;
         }
         table tr:nth-child(even) {
-            background-color: #e8f5e9; /* سبز خیلی روشن */
+            background-color: #e8f5e9;
         }
         #summaryTable {
             width: 50%;
@@ -95,12 +99,54 @@
             background-color: #FF9800;
         }
         #summaryTable tr:nth-child(even) {
-            background-color: #fff3e0; /* نارنجی خیلی روشن */
+            background-color: #fff3e0;
         }
         #resultTitle {
             text-align: center;
-            font-size: 12pt;
+            font-size: 1.2em;
             margin-top: 10px;
+        }
+
+        /* تنظیمات برای موبایل */
+        @media screen and (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            h2 {
+                font-size: 1.2em;
+            }
+            .input-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .input-group label {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            .input-group input {
+                width: 100%;
+                margin: 0 0 10px 0;
+            }
+            .button-group {
+                display: flex;
+                flex-direction: column;
+            }
+            button {
+                width: 100%;
+                margin: 5px 0;
+            }
+            #summaryTable {
+                width: 100%;
+            }
+            table {
+                font-size: 0.9em;
+            }
+            th, td {
+                padding: 5px;
+            }
+            #resultTitle {
+                font-size: 1em;
+            }
         }
 
         /* تنظیمات پرینت */
@@ -116,7 +162,7 @@
                 max-width: 100%;
             }
             .input-group:not(#bankInfo), .button-group {
-                display: none; /* مخفی کردن بقیه ورودی‌ها و دکمه‌ها */
+                display: none;
             }
             #bankInfo {
                 margin: 0;
@@ -133,7 +179,7 @@
                 padding: 2px;
                 margin: 0 5px;
                 border: none;
-                direction: ltr; /* چپ به راست توی پرینت */
+                direction: ltr;
             }
             h2 {
                 font-size: 11pt;
@@ -226,16 +272,18 @@
             return Math.round(number).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
-        // مدیریت ورودی شماره کارت و شماره تماس
+        // مدیریت ورودی‌ها
         document.getElementById('cardNumber').addEventListener('input', function(e) {
-            this.value = this.value.replace(/[^0-9-]/g, ''); // فقط عدد و خط تیره
+            this.value = this.value.replace(/[^0-9-]/g, '');
         });
         document.getElementById('managerContact').addEventListener('input', function(e) {
-            this.value = this.value.replace(/[^0-9-]/g, ''); // فقط عدد و خط تیره
+            this.value = this.value.replace(/[^0-9-]/g, '');
+        });
+        document.getElementById('accountHolder').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^آ-یa-zA-Z0-9\s]/g, '');
         });
 
         function calculateShares() {
-            // گرفتن مقادیر ورودی
             const waterBill = parseFloat(document.getElementById('waterBill').value) || 0;
             const electricityBill = parseFloat(document.getElementById('electricityBill').value) || 0;
             const gasBill = parseFloat(document.getElementById('gasBill').value) || 0;
@@ -245,36 +293,28 @@
             const accountHolder = document.getElementById('accountHolder').value || "نامشخص";
             const managerContact = document.getElementById('managerContact').value || "نامشخص";
 
-            // تنظیم مقادیر برای پرینت
             document.getElementById('cardNumber').value = cardNumber;
             document.getElementById('accountHolder').value = accountHolder;
             document.getElementById('managerContact').value = managerContact;
 
-            // محاسبه سهم هر نفر برای آب
             const waterPerPerson = waterBill / totalResidents;
-            // محاسبه سهم هر واحد برای بقیه هزینه‌ها
             const electricityShare = electricityBill / totalUnits;
             const gasShare = gasBill / totalUnits;
             const cleaningShare = cleaningCost / totalUnits;
             const extraShare = extraCost / totalUnits;
 
-            // ساخت جدول اصلی
             let table = '<table>';
             table += '<tr><th>واحد</th><th>تعداد نفرات</th><th>سهم آب</th><th>سهم برق</th><th>سهم گاز</th><th>سهم نظافت</th><th>سهم اضافی</th><th>جمع کل</th></tr>';
 
-            // ساخت جدول خلاصه
             let summaryTable = '<table id="summaryTable">';
             summaryTable += '<tr><th>واحد</th><th>جمع کل</th></tr>';
 
             for (let i = 0; i < totalUnits; i++) {
                 const unitName = unitNames[i];
                 const residentCount = residents[i];
-                
-                // محاسبه سهم آب: مبلغ هر نفر × تعداد نفرات واحد
                 const waterShare = waterPerPerson * residentCount;
                 const totalShare = waterShare + electricityShare + gasShare + cleaningShare + extraShare;
 
-                // پر کردن جدول اصلی
                 table += `<tr>
                     <td>${unitName}</td>
                     <td>${residentCount}</td>
@@ -286,7 +326,6 @@
                     <td>${formatNumber(totalShare)} تومان</td>
                 </tr>`;
 
-                // پر کردن جدول خلاصه
                 summaryTable += `<tr>
                     <td>${unitName}</td>
                     <td>${formatNumber(totalShare)} تومان</td>
