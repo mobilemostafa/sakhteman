@@ -174,22 +174,32 @@
                 margin: 0 0 2mm 0;
                 font-size: 8pt;
                 display: flex;
-                justify-content: center; /* وسط‌چین کردن */
+                justify-content: center;
                 align-items: center;
                 text-align: center;
                 width: 100%;
+                gap: 10px; /* فاصله بین جفت‌ها */
             }
             #bankInfo label {
-                width: auto;
-                margin: 0 5px;
+                margin: 0;
+                display: inline-block;
             }
             #bankInfo input {
-                width: 100px;
                 padding: 2px;
-                margin: 0 5px;
+                margin: 0 5px 0 0; /* فاصله بعد از label */
                 border: none;
                 direction: ltr;
-                text-align: center; /* متن داخل ورودی هم وسط‌چین */
+                text-align: left; /* متن داخل ورودی چپ‌چین */
+                white-space: nowrap;
+                overflow: visible;
+                display: inline-block;
+            }
+            #bankInfo input#cardNumber {
+                width: 150px;
+            }
+            #bankInfo input#accountHolder,
+            #bankInfo input#managerContact {
+                width: 100px;
             }
             h2 {
                 font-size: 11pt;
