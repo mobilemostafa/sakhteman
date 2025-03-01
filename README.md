@@ -1,6 +1,4 @@
-# sakhteman
-به نام خدا
-
+<!DOCTYPE html>
 <html lang="fa">
 <head>
     <meta charset="UTF-8">
@@ -25,9 +23,10 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         .input-group {
-            margin: 15px 0;
+            margin: 10px 0;
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
         }
         .input-group label {
             width: 120px;
@@ -39,13 +38,18 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             outline: none;
+            margin: 5px;
+        }
+        #cardNumber {
+            direction: ltr; /* چپ به راست برای شماره کارت */
+            text-align: left;
         }
         .input-group input:focus {
             border-color: #4CAF50;
         }
         .button-group {
             text-align: center;
-            margin: 20px 0;
+            margin: 15px 0;
         }
         button {
             padding: 10px 20px;
@@ -69,11 +73,11 @@
         table {
             border-collapse: collapse;
             width: 100%;
-            margin-top: 20px;
+            margin-top: 15px;
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: 8px;
             text-align: center;
         }
         th {
@@ -85,7 +89,7 @@
         }
         #summaryTable {
             width: 50%;
-            margin: 20px auto;
+            margin: 15px auto;
         }
         #summaryTable th {
             background-color: #FF9800;
@@ -96,7 +100,7 @@
         #resultTitle {
             text-align: center;
             font-size: 12pt;
-            margin-top: 10mm;
+            margin-top: 10px;
         }
 
         /* تنظیمات پرینت */
@@ -107,43 +111,68 @@
             }
             .container {
                 box-shadow: none;
-                padding: 5mm; /* کاهش padding */
+                padding: 5mm;
                 width: 100%;
                 max-width: 100%;
             }
-            .input-group, .button-group {
-                display: none; /* مخفی کردن ورودی‌ها و دکمه‌ها */
+            .input-group:not(#bankInfo), .button-group {
+                display: none; /* مخفی کردن بقیه ورودی‌ها و دکمه‌ها */
+            }
+            #bankInfo {
+                margin: 0;
+                font-size: 8pt;
+                display: flex;
+                justify-content: space-between;
+            }
+            #bankInfo label {
+                width: auto;
+                margin: 0 5px;
+            }
+            #bankInfo input {
+                width: 100px;
+                padding: 2px;
+                margin: 0 5px;
+                border: none;
+                direction: ltr; /* چپ به راست توی پرینت */
             }
             h2 {
-                font-size: 12pt; /* کوچیک‌تر کردن عنوان */
-                margin: 0 0 3mm 0; /* کاهش حاشیه */
+                font-size: 11pt;
+                margin: 2mm 0;
             }
             #summaryTable {
-                width: 35%; /* کوچیک‌تر کردن جدول خلاصه */
-                margin: 3mm auto; /* کاهش فاصله */
-                font-size: 9pt; /* فونت کوچیک‌تر */
+                width: 35%;
+                margin: 2mm auto;
+                font-size: 8pt;
             }
             #resultTitle {
-                font-size: 10pt; /* کوچیک‌تر کردن عنوان جزئیات */
-                margin: 3mm 0; /* کاهش فاصله */
+                font-size: 9pt;
+                margin: 2mm 0;
             }
             table {
-                width: 85%; /* کاهش عرض برای جا شدن ستون آخر */
-                margin: 0 5mm 0 auto; /* کشیدن به راست */
-                font-size: 9pt; /* فونت کوچیک‌تر */
+                width: 85%;
+                margin: 0 5mm 0 auto;
+                font-size: 8pt;
             }
             th, td {
-                padding: 3px; /* کاهش padding سلول‌ها */
+                padding: 2px;
             }
             @page {
                 size: A4;
-                margin: 5mm; /* کاهش حاشیه صفحه */
+                margin: 5mm;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="input-group" id="bankInfo">
+            <label>شماره کارت:</label>
+            <input type="text" id="cardNumber" placeholder="شماره کارت">
+            <label>صاحب حساب:</label>
+            <input type="text" id="accountHolder" placeholder="نام صاحب حساب">
+            <label>شماره تماس مدیر:</label>
+            <input type="text" id="managerContact" placeholder="شماره تماس">
+        </div>
         <h2>محاسبه سهم هر واحد در ساختمان ابویی با نفرات 25</h2>
         
         <div class="input-group">
@@ -197,6 +226,14 @@
             return Math.round(number).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
+        // مدیریت ورودی شماره کارت و شماره تماس
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9-]/g, ''); // فقط عدد و خط تیره
+        });
+        document.getElementById('managerContact').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9-]/g, ''); // فقط عدد و خط تیره
+        });
+
         function calculateShares() {
             // گرفتن مقادیر ورودی
             const waterBill = parseFloat(document.getElementById('waterBill').value) || 0;
@@ -204,6 +241,14 @@
             const gasBill = parseFloat(document.getElementById('gasBill').value) || 0;
             const cleaningCost = parseFloat(document.getElementById('cleaningCost').value) || 0;
             const extraCost = parseFloat(document.getElementById('extraCost').value) || 0;
+            const cardNumber = document.getElementById('cardNumber').value || "نامشخص";
+            const accountHolder = document.getElementById('accountHolder').value || "نامشخص";
+            const managerContact = document.getElementById('managerContact').value || "نامشخص";
+
+            // تنظیم مقادیر برای پرینت
+            document.getElementById('cardNumber').value = cardNumber;
+            document.getElementById('accountHolder').value = accountHolder;
+            document.getElementById('managerContact').value = managerContact;
 
             // محاسبه سهم هر نفر برای آب
             const waterPerPerson = waterBill / totalResidents;
@@ -253,7 +298,7 @@
 
             document.getElementById('summary').innerHTML = summaryTable;
             document.getElementById('result').innerHTML = table;
-            document.getElementById('resultTitle').style.display = 'block'; // نمایش عنوان هنگام محاسبه
+            document.getElementById('resultTitle').style.display = 'block';
         }
     </script>
 </body>
