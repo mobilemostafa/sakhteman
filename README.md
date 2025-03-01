@@ -2,23 +2,28 @@
 <html lang="fa">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- برای ریسپانسیو بودن -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>محاسبه سهم واحدها</title>
     <style>
+        * {
+            box-sizing: border-box; /* جلوگیری از مشکل عرض */
+        }
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
             direction: rtl;
-            padding: 20px;
+            padding: 5%;
             background-color: #f5f5f5;
             margin: 0;
+            font-size: 16px; /* پایه برای موبایل */
         }
         h2 {
             color: #333;
             text-align: center;
-            font-size: 1.5em; /* انعطاف‌پذیر */
+            font-size: 1.5rem;
+            margin: 0 0 10px 0;
         }
         .container {
-            max-width: 800px;
+            max-width: 100%;
             margin: 0 auto;
             background: white;
             padding: 5%;
@@ -26,23 +31,24 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         .input-group {
-            margin: 10px 0;
+            margin: 8px 0;
             display: flex;
-            align-items: center;
-            flex-wrap: wrap;
+            flex-direction: column;
+            width: 100%;
         }
         .input-group label {
-            width: 120px;
             color: #555;
+            margin-bottom: 5px;
+            font-size: 1rem;
         }
         .input-group input {
             padding: 8px;
-            width: 200px;
+            width: 100%;
             border: 1px solid #ddd;
             border-radius: 5px;
             outline: none;
-            margin: 5px;
-            box-sizing: border-box;
+            margin-bottom: 10px;
+            font-size: 1rem;
         }
         #cardNumber {
             direction: ltr;
@@ -54,16 +60,20 @@
         .button-group {
             text-align: center;
             margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
         button {
-            padding: 10px 20px;
-            margin: 0 10px;
+            padding: 10px;
             background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
+            width: 100%;
+            font-size: 1rem;
         }
         button:hover {
             background-color: #45a049;
@@ -78,10 +88,11 @@
             border-collapse: collapse;
             width: 100%;
             margin-top: 15px;
+            font-size: 0.9rem;
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 5px;
             text-align: center;
         }
         th {
@@ -92,8 +103,8 @@
             background-color: #e8f5e9;
         }
         #summaryTable {
-            width: 50%;
-            margin: 15px auto;
+            width: 100%;
+            margin: 15px 0;
         }
         #summaryTable th {
             background-color: #FF9800;
@@ -103,49 +114,45 @@
         }
         #resultTitle {
             text-align: center;
-            font-size: 1.2em;
+            font-size: 1.2rem;
             margin-top: 10px;
         }
 
-        /* تنظیمات برای موبایل */
-        @media screen and (max-width: 600px) {
+        /* تنظیمات برای صفحه‌های بزرگ‌تر */
+        @media screen and (min-width: 600px) {
             .container {
-                padding: 10px;
-            }
-            h2 {
-                font-size: 1.2em;
+                max-width: 800px;
+                padding: 20px;
             }
             .input-group {
-                flex-direction: column;
-                align-items: flex-start;
+                flex-direction: row;
+                align-items: center;
             }
             .input-group label {
-                width: 100%;
-                margin-bottom: 5px;
+                width: 120px;
+                margin-bottom: 0;
             }
             .input-group input {
-                width: 100%;
-                margin: 0 0 10px 0;
+                width: 200px;
+                margin: 0 5px 0 0;
             }
             .button-group {
-                display: flex;
-                flex-direction: column;
+                flex-direction: row;
+                justify-content: center;
+                gap: 20px;
             }
             button {
-                width: 100%;
-                margin: 5px 0;
+                width: auto;
             }
             #summaryTable {
-                width: 100%;
+                width: 50%;
+                margin: 15px auto;
             }
             table {
-                font-size: 0.9em;
+                font-size: 1rem;
             }
             th, td {
-                padding: 5px;
-            }
-            #resultTitle {
-                font-size: 1em;
+                padding: 8px;
             }
         }
 
@@ -159,7 +166,6 @@
                 box-shadow: none;
                 padding: 5mm;
                 width: 100%;
-                max-width: 100%;
             }
             .input-group:not(#bankInfo), .button-group {
                 display: none;
@@ -253,7 +259,6 @@
     </div>
 
     <script>
-        // تعداد نفرات هر واحد ثابت است
         const residents = [4, 4, 2, 2, 2, 4, 4, 3];
         const unitNames = [
             "واحد یک آقای رضایی",
@@ -266,13 +271,12 @@
             "واحد هشت آقای ماندگاری"
         ];
         const totalUnits = 8;
-        const totalResidents = residents.reduce((a, b) => a + b, 0); // 25 نفر
+        const totalResidents = residents.reduce((a, b) => a + b, 0);
 
         function formatNumber(number) {
             return Math.round(number).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
-        // مدیریت ورودی‌ها
         document.getElementById('cardNumber').addEventListener('input', function(e) {
             this.value = this.value.replace(/[^0-9-]/g, '');
         });
