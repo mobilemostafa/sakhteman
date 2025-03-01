@@ -222,7 +222,7 @@
             <input type="text" id="cardNumber" placeholder="شماره کارت">
             <label>صاحب حساب:</label>
             <input type="text" id="accountHolder" placeholder="نام صاحب حساب">
-            <label>شماره تماس مدیر:</label>
+            <label>شماره تماس:</label>
             <input type="text" id="managerContact" placeholder="شماره تماس">
         </div>
         <h2>محاسبه سهم هر واحد در ساختمان ابویی با نفرات 25</h2>
