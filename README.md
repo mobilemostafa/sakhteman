@@ -174,22 +174,26 @@
                 margin: 0 0 2mm 0;
                 font-size: 8pt;
                 display: flex;
-                justify-content: center;
-                align-items: center;
+                flex-direction: column; /* هر جفت توی یه خط جدا */
+                align-items: center; /* وسط‌چین عمودی */
                 text-align: center;
                 width: 100%;
-                gap: 10px; /* فاصله بین جفت‌ها */
+            }
+            #bankInfo span {
+                display: flex;
+                align-items: center;
+                margin-bottom: 2mm; /* فاصله بین سطرها */
             }
             #bankInfo label {
-                margin: 0;
+                margin: 0 5px 0 0;
                 display: inline-block;
             }
             #bankInfo input {
                 padding: 2px;
-                margin: 0 5px 0 0; /* فاصله بعد از label */
+                margin: 0;
                 border: none;
                 direction: ltr;
-                text-align: left; /* متن داخل ورودی چپ‌چین */
+                text-align: left;
                 white-space: nowrap;
                 overflow: visible;
                 display: inline-block;
@@ -232,12 +236,18 @@
 <body>
     <div class="container">
         <div class="input-group" id="bankInfo">
-            <label>شماره کارت:</label>
-            <input type="text" id="cardNumber" placeholder="شماره کارت">
-            <label>صاحب حساب:</label>
-            <input type="text" id="accountHolder" placeholder="نام صاحب حساب">
-            <label>شماره تماس مدیر:</label>
-            <input type="text" id="managerContact" placeholder="شماره تماس">
+            <span>
+                <label>شماره کارت:</label>
+                <input type="text" id="cardNumber" placeholder="شماره کارت">
+            </span>
+            <span>
+                <label>صاحب حساب:</label>
+                <input type="text" id="accountHolder" placeholder="نام صاحب حساب">
+            </span>
+            <span>
+                <label>شماره تماس مدیر:</label>
+                <input type="text" id="managerContact" placeholder="شماره تماس">
+            </span>
         </div>
         <h2>محاسبه سهم هر واحد در ساختمان ابویی با نفرات 25</h2>
         
