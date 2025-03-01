@@ -166,23 +166,33 @@
                 box-shadow: none;
                 padding: 5mm;
                 width: 100%;
+                position: relative; /* برای تنظیم ترتیب */
             }
             .input-group:not(#bankInfo), .button-group {
                 display: none;
             }
-            #bankInfo {
+            h2 {
+                font-size: 11pt;
                 margin: 0 0 2mm 0;
+                position: absolute; /* بالای صفحه */
+                top: 0;
+                left: 0;
+                right: 0;
+                text-align: center;
+            }
+            #bankInfo {
+                margin: 12mm 0 2mm 0; /* فاصله از بالا برای جا دادن h2 */
                 font-size: 8pt;
                 display: flex;
-                flex-direction: column; /* هر جفت توی یه خط جدا */
-                align-items: center; /* وسط‌چین عمودی */
+                flex-direction: column;
+                align-items: center;
                 text-align: center;
                 width: 100%;
             }
             #bankInfo span {
                 display: flex;
                 align-items: center;
-                margin-bottom: 2mm; /* فاصله بین سطرها */
+                margin-bottom: 2mm;
             }
             #bankInfo label {
                 margin: 0 5px 0 0;
@@ -204,10 +214,6 @@
             #bankInfo input#accountHolder,
             #bankInfo input#managerContact {
                 width: 100px;
-            }
-            h2 {
-                font-size: 11pt;
-                margin: 2mm 0;
             }
             #summaryTable {
                 width: 35%;
